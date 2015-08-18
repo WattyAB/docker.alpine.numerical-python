@@ -61,13 +61,13 @@ RUN export BLAS=~/src/BLAS/libfblas.a
 
 
 # LAPACK
-RUN mkdir -p ~/src
-RUN cd ~/src/ && mv /tmp/lapack.tgz .
-RUN cd ~/src/ && tar xzf lapack.tgz
-RUN cp /tmp/make.inc ~/src/lapack-3.5.0/make.inc
-RUN cd ~/src/lapack-3.5.0/ && make lapacklib
-RUN cd ~/src/lapack-3.5.0/ && make clean
-#RUN cd ~/src/lapack-3.5.0/ && sh /tmp/lapack.sh
+# RUN mkdir -p ~/src
+# RUN cd ~/src/ && mv /tmp/lapack.tgz .
+# RUN cd ~/src/ && tar xzf lapack.tgz
+# RUN cp /tmp/make.inc ~/src/lapack-3.5.0/make.inc
+# RUN cd ~/src/lapack-3.5.0/ && make lapacklib
+# RUN cd ~/src/lapack-3.5.0/ && make clean
+RUN sh /tmp/lapack.sh
 RUN export LAPACK=~/src/lapack-3.5.0/liblapack.a
 
 
