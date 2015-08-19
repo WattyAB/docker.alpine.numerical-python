@@ -72,9 +72,9 @@ ENV LAPACK=~/src/lapack-3.5.0/liblapack.a
 
 
 # REQUIREMENTS
-RUN pip install numpy==1.9.2
-RUN pip install matplotlib==1.4.3
-RUN pip install scipy==0.16.0
-RUN pip install seaborn==0.6.0
-RUN pip install ipython[all]
-RUN pip install -r /tmp/requirements.txt
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install numpy==1.9.2
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install matplotlib==1.4.3
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install scipy==0.16.0
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install seaborn==0.6.0
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install ipython[all]
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install -r /tmp/requirements.txt
