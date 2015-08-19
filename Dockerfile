@@ -43,7 +43,9 @@ RUN apk update && apk add \
     g++ \
     mariadb-dev \
     libgfortran \
-    make
+    make \
+    ncurses \
+    readline
 
 
 # BLAS
