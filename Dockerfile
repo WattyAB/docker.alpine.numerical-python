@@ -12,6 +12,8 @@ COPY lapack.sh /tmp/
 # System packages
 RUN apk update && apk add \
     gcc \
+    ncurses \
+    readline \
     python \
     py-pip \
     libjpeg \
@@ -43,10 +45,7 @@ RUN apk update && apk add \
     g++ \
     mariadb-dev \
     libgfortran \
-    make \
-    ncurses \
-    readline
-
+    make 
 
 # BLAS
 # RUN mkdir -p ~/src/
