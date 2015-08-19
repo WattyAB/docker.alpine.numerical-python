@@ -57,7 +57,7 @@ RUN apk update && apk add \
 # RUN ranlib libfblas.a
 # RUN rm -rf *.o
 RUN sh /tmp/blas.sh
-RUN export BLAS=~/src/BLAS/libfblas.a
+ENV BLAS=~/src/BLAS/libfblas.a
 
 
 # LAPACK
@@ -68,7 +68,7 @@ RUN export BLAS=~/src/BLAS/libfblas.a
 # RUN cd ~/src/lapack-3.5.0/ && make lapacklib
 # RUN cd ~/src/lapack-3.5.0/ && make clean
 RUN sh /tmp/lapack.sh
-RUN export LAPACK=~/src/lapack-3.5.0/liblapack.a
+ENV LAPACK=~/src/lapack-3.5.0/liblapack.a
 
 
 # REQUIREMENTS
