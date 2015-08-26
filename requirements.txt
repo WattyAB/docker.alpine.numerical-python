@@ -39,7 +39,7 @@ locustio==0.7.2
 Flask-BasicAuth==0.2.0
 Flask-Bootstrap==3.3.0.1
 PyYAML==3.11
-flasgger==0.4.1
+flasgger==0.4.3
 Flask-Classy==0.6.10
 # ENV
 click==3.3
