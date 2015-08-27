@@ -41,6 +41,7 @@ Flask-Bootstrap==3.3.0.1
 PyYAML==3.11
 flasgger==0.4.3
 Flask-Classy==0.6.10
+jsonschema==2.5.1
 # ENV
 click==3.3
 ecdsa==0.13
