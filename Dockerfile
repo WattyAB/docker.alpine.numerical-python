@@ -1,82 +1,41 @@
-FROM alpine
-MAINTAINER CAtholabs <catholabs@catho.com>
-WORKDIR /tmp/
+FROM alpine:3.2
 
-COPY requirements.txt /tmp/
-COPY make.inc /tmp/
-COPY lapack.tgz /tmp/
-COPY blas.tgz /tmp/
-COPY blas.sh /tmp/
-COPY lapack.sh /tmp/
+RUN ln -sf /usr/share/zoneinfo/Etc/UTC /etc/localtime
+RUN echo "http://nl.alpinelinux.org/alpine/v3.2/main" > /etc/apk/repositories
 
-# System packages
-RUN apk update && apk add \
-    gcc \
-    ncurses \
-    readline \
-    python \
-    py-pip \
-    libjpeg \
-    zlib \
-    zlib-dev \
-    tiff \
-    freetype \
-    git \
-    py-pillow \
-    python-dev \
-    musl-dev \
-    bash \
-    mysql-client \
-    gfortran \
-    gsl \
-    mariadb-libs \
-    libxft-dev \
-    pkgconfig \
-    pkgconf \
-    python-dev \
-    tmux \
-    curl \
-    nano \
-    vim \
-    htop \
-    man \
-    unzip \
-    wget \
-    g++ \
-    mariadb-dev \
-    libgfortran \
-    make 
+COPY libs/* /tmp/
 
-# BLAS
-# RUN mkdir -p ~/src/
-# RUN cd ~/src/
-# RUN mv /tmp/blas.tgz .
-# RUN tar xzf blas.tgz
-# RUN cd BLAS
-# RUN gfortran -O3 -std=legacy -m64 -fno-second-underscore -fPIC -c *.f
-# RUN ar r libfblas.a *.o
-# RUN ranlib libfblas.a
-# RUN rm -rf *.o
-RUN sh /tmp/blas.sh
-ENV BLAS=~/src/BLAS/libfblas.a
+RUN apk update &&\
+    apk add python \
+            python-dev \
+            py-pip \
+            openntpd \
+            build-base \
+            python-dev \
+            musl-dev \
+            gfortran \
+            libgfortran
+
+# Build BLAS and LAPACK
+RUN source /tmp/blas.sh
+RUN source /tmp/lapack.sh
+
+# Install numpy and pandas
+RUN pip install --upgrade pip
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install -v numpy==1.9.0
+RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install -v pandas==0.14.1
+
+# Clean up
+RUN mv ~/src/BLAS/libfblas.a /tmp/
+RUN mv ~/src/lapack-3.5.0/liblapack.a /tmp/
+RUN rm -rf ~/src
+RUN rm -rf ~/.cache/pip
+RUN mkdir -p ~/src/BLAS ~/src/lapack-3.5.0
+RUN mv /tmp/libfblas.a ~/src/BLAS/libfblas.a
+RUN mv /tmp/liblapack.a ~/src/lapack-3.5.0/liblapack.a
+RUN rm -rf /tmp/*
+
+# Remove all the extra build stuff
+RUN apk del build-base "*-dev"
 
 
-# LAPACK
-# RUN mkdir -p ~/src
-# RUN cd ~/src/ && mv /tmp/lapack.tgz .
-# RUN cd ~/src/ && tar xzf lapack.tgz
-# RUN cp /tmp/make.inc ~/src/lapack-3.5.0/make.inc
-# RUN cd ~/src/lapack-3.5.0/ && make lapacklib
-# RUN cd ~/src/lapack-3.5.0/ && make clean
-RUN sh /tmp/lapack.sh
-ENV LAPACK=~/src/lapack-3.5.0/liblapack.a
-
-
-# REQUIREMENTS
-RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install numpy==1.9.2
-RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install matplotlib==1.4.3
-RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install scipy==0.16.0
-#RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install seaborn==0.6.0
-#RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install ipython[all]
-RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install ipython
-RUN BLAS=~/src/BLAS/libfblas.a LAPACK=~/src/lapack-3.5.0/liblapack.a pip install -r /tmp/requirements.txt

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 mkdir -p ~/src/
 cd ~/src/
 mv /tmp/blas.tgz .
