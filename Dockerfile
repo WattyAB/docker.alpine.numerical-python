@@ -8,6 +8,7 @@ COPY libs/* /tmp/
 RUN apk update &&\
     apk add python \
             python-dev \
+	    ca-certificates \
             py-pip \
             openntpd \
             build-base \
